@@ -43,14 +43,14 @@ export function DownloaderCard() {
 
       const total = Number(res.headers.get("content-length")) || null;
       const reader = res.body!.getReader();
-      const chunks: Uint8Array[] = [];
+      const chunks: BlobPart[] = [];
       let received = 0;
       setState({ kind: "downloading", received: 0, total });
 
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-        chunks.push(value);
+        chunks.push(value.slice().buffer);
         received += value.byteLength;
         setState({ kind: "downloading", received, total });
       }
