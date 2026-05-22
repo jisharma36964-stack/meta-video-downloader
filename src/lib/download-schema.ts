@@ -1,11 +1,12 @@
 import { z } from "zod";
 
 const ALLOWED_HOST_SUFFIXES = [
-  "fbcdn.net",
-  "facebook.com",
-  "cdninstagram.com",
   "meta.ai",
   "metaai.com",
+  "fbcdn.net",
+  "facebook.com",
+  "fb.com",
+  "cdninstagram.com",
   "whatsapp.net",
 ];
 
@@ -26,7 +27,7 @@ export const downloadSchema = z.object({
       } catch {
         return false;
       }
-    }, "Only direct Meta AI / Facebook CDN links are supported."),
+    }, "Paste a Meta AI share link (meta.ai/...) or direct Facebook CDN link."),
 });
 
 export type DownloadInput = z.infer<typeof downloadSchema>;
