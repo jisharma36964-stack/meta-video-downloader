@@ -40,21 +40,48 @@ function decodeEscapes(s: string) {
     .replace(/&amp;/g, "&");
 }
 
+function cleanExtractedVideoUrl(value: string): string | null {
+  let url = decodeEscapes(value).trim().replace(/\\+$/g, "");
+  const mp4Index = url.indexOf(".mp4");
+  if (mp4Index >= 0) {
+    const trailing = url.slice(mp4Index + 4);
+    const stopIndex = trailing.search(/(?:%3C|<|\\n|\\r|\\t|[}\]\\]|,\{)/i);
+    if (stopIndex >= 0) url = url.slice(0, mp4Index + 4 + stopIndex);
+  }
+
+  try {
+    return new URL(url).toString();
+  } catch {
+    return null;
+  }
+}
+
+function getAllowedHostError(url: string): string | null {
+  try {
+    const host = new URL(url).hostname.toLowerCase();
+    const allowed = ALLOWED_HOST_SUFFIXES.some((s) => host === s || host.endsWith("." + s));
+    return allowed ? null : `Resolved video host is not supported: ${host}.`;
+  } catch {
+    return "Resolved video URL is invalid.";
+  }
+}
+
 /**
  * Pulls a direct progressive MP4 URL out of a Meta AI / Facebook post HTML page.
  * Prefers progressive_recipe URLs (single-file MP4 with audio) at the highest
  * available resolution. Falls back to the first .mp4 URL found.
  */
 function extractVideoUrl(html: string): string | null {
+  const ogVideo = html.match(/<meta[^>]+(?:property|name)=["']og:video(?::secure_url)?["'][^>]+content=["']([^"']+)["'][^>]*>/i);
+  const ogCandidate = ogVideo?.[1] ? cleanExtractedVideoUrl(ogVideo[1]) : null;
+  if (ogCandidate?.includes(".mp4")) return ogCandidate;
+
   // Match raw .mp4 URLs (may contain \u0026 escapes)
   const re = /https:\\?\/\\?\/[^\s"'<>\\]+?\.mp4[^"'<>\s]*/g;
   const raw = html.match(re) ?? [];
   if (raw.length === 0) return null;
 
-  const candidates = raw.map(decodeEscapes).filter((u) => {
-    // Drop trailing garbage that ends inside an XML tag
-    return !u.includes("</BaseURL>");
-  });
+  const candidates = raw.map(cleanExtractedVideoUrl).filter((u): u is string => Boolean(u));
 
   // Prefer progressive (single-file with audio) over DASH init segments
   const progressive = candidates.filter((u) => /progressive_recipe|xpv_progressive/i.test(u));
@@ -87,6 +114,33 @@ async function fetchWithTimeout(url: string, ms: number, init?: RequestInit) {
   }
 }
 
+async function extractVideoUrlFromResponse(res: Response, ms: number): Promise<string | null> {
+  if (!res.body) return null;
+
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let html = "";
+  const startedAt = Date.now();
+
+  while (Date.now() - startedAt < ms && html.length < 1_500_000) {
+    const remaining = Math.max(1, ms - (Date.now() - startedAt));
+    const { done, value } = await Promise.race([
+      reader.read(),
+      new Promise<never>((_, reject) => setTimeout(() => reject(new Error("Timed out reading response.")), remaining)),
+    ]);
+    if (done) break;
+    html += decoder.decode(value, { stream: true });
+    const found = extractVideoUrl(html);
+    if (found) {
+      await reader.cancel().catch(() => {});
+      return found;
+    }
+  }
+
+  html += decoder.decode();
+  return extractVideoUrl(html);
+}
+
 async function resolveDirectVideoUrl(input: string): Promise<string> {
   const u = new URL(input);
   const host = u.hostname.toLowerCase();
@@ -104,8 +158,7 @@ async function resolveDirectVideoUrl(input: string): Promise<string> {
   if (!res.ok) {
     throw new Error(`Could not load the post page (${res.status}).`);
   }
-  const html = await res.text();
-  const found = extractVideoUrl(html);
+  const found = await extractVideoUrlFromResponse(res, 15_000);
   if (!found) {
     throw new Error(
       "Could not find a downloadable video on that page. The post may be private, expired, or contain no video.",
@@ -136,6 +189,11 @@ export const Route = createFileRoute("/api/download")({
         let directUrl: string;
         try {
           directUrl = await resolveDirectVideoUrl(parsed.data.url);
+          const hostError = getAllowedHostError(directUrl);
+          if (hostError) {
+            console.error("Resolved URL rejected:", hostError);
+            return Response.json({ error: hostError }, { status: 422 });
+          }
         } catch (err) {
           const msg = err instanceof Error ? err.message : "Could not resolve video.";
           console.error("Resolve failed:", msg);
@@ -156,16 +214,32 @@ export const Route = createFileRoute("/api/download")({
         }
 
         if (!upstream.ok || !upstream.body) {
+          const upstreamBody = await upstream.text().catch(() => "");
+          const reason = upstream.status === 403
+            ? "Meta/Facebook refused access to the video file (403). The share link is private, expired, geo-blocked, or requires a logged-in session."
+            : `Video request failed (${upstream.status}).`;
+          console.error("Video request failed:", {
+            status: upstream.status,
+            statusText: upstream.statusText,
+            contentType: upstream.headers.get("content-type"),
+            host: new URL(directUrl).hostname,
+            bodyPreview: upstreamBody.slice(0, 200),
+          });
           return Response.json(
-            { error: `Video request failed (${upstream.status}).` },
+            { error: reason },
             { status: 502 },
           );
         }
 
         const contentType = upstream.headers.get("content-type") ?? "";
         if (!/^video\//i.test(contentType) && !/octet-stream/i.test(contentType)) {
+          console.error("Resolved URL returned non-video content:", {
+            status: upstream.status,
+            contentType,
+            host: new URL(directUrl).hostname,
+          });
           return Response.json(
-            { error: "Resolved URL did not return a video file." },
+            { error: `Resolved URL returned ${contentType || "unknown content"}, not a video file.` },
             { status: 422 },
           );
         }
