@@ -114,6 +114,15 @@ async function fetchWithTimeout(url: string, ms: number, init?: RequestInit) {
   }
 }
 
+async function fetchTextWithTimeout(url: string, ms: number, init?: RequestInit) {
+  const res = await fetchWithTimeout(url, ms, init);
+  const text = await Promise.race([
+    res.text(),
+    new Promise<never>((_, reject) => setTimeout(() => reject(new Error("Timed out reading response.")), ms)),
+  ]);
+  return { res, text };
+}
+
 async function resolveDirectVideoUrl(input: string): Promise<string> {
   const u = new URL(input);
   const host = u.hostname.toLowerCase();
@@ -125,13 +134,12 @@ async function resolveDirectVideoUrl(input: string): Promise<string> {
   }
 
   // Otherwise treat as an HTML page that embeds the video URL
-  const res = await fetchWithTimeout(input, 15_000, {
+  const { res, text: html } = await fetchTextWithTimeout(input, 15_000, {
     headers: { Accept: "text/html,*/*" },
   });
   if (!res.ok) {
     throw new Error(`Could not load the post page (${res.status}).`);
   }
-  const html = await res.text();
   const found = extractVideoUrl(html);
   if (!found) {
     throw new Error(
