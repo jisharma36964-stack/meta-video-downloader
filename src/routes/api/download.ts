@@ -163,6 +163,11 @@ export const Route = createFileRoute("/api/download")({
         let directUrl: string;
         try {
           directUrl = await resolveDirectVideoUrl(parsed.data.url);
+          const hostError = getAllowedHostError(directUrl);
+          if (hostError) {
+            console.error("Resolved URL rejected:", hostError);
+            return Response.json({ error: hostError }, { status: 422 });
+          }
         } catch (err) {
           const msg = err instanceof Error ? err.message : "Could not resolve video.";
           console.error("Resolve failed:", msg);
@@ -183,16 +188,32 @@ export const Route = createFileRoute("/api/download")({
         }
 
         if (!upstream.ok || !upstream.body) {
+          const upstreamBody = await upstream.text().catch(() => "");
+          const reason = upstream.status === 403
+            ? "Meta/Facebook refused access to the video file (403). The share link is private, expired, geo-blocked, or requires a logged-in session."
+            : `Video request failed (${upstream.status}).`;
+          console.error("Video request failed:", {
+            status: upstream.status,
+            statusText: upstream.statusText,
+            contentType: upstream.headers.get("content-type"),
+            host: new URL(directUrl).hostname,
+            bodyPreview: upstreamBody.slice(0, 200),
+          });
           return Response.json(
-            { error: `Video request failed (${upstream.status}).` },
+            { error: reason },
             { status: 502 },
           );
         }
 
         const contentType = upstream.headers.get("content-type") ?? "";
         if (!/^video\//i.test(contentType) && !/octet-stream/i.test(contentType)) {
+          console.error("Resolved URL returned non-video content:", {
+            status: upstream.status,
+            contentType,
+            host: new URL(directUrl).hostname,
+          });
           return Response.json(
-            { error: "Resolved URL did not return a video file." },
+            { error: `Resolved URL returned ${contentType || "unknown content"}, not a video file.` },
             { status: 422 },
           );
         }
