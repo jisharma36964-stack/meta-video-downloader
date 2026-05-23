@@ -40,21 +40,48 @@ function decodeEscapes(s: string) {
     .replace(/&amp;/g, "&");
 }
 
+function cleanExtractedVideoUrl(value: string): string | null {
+  let url = decodeEscapes(value).trim().replace(/\\+$/g, "");
+  const mp4Index = url.indexOf(".mp4");
+  if (mp4Index >= 0) {
+    const trailing = url.slice(mp4Index + 4);
+    const stopIndex = trailing.search(/(?:%3C|<|\\n|\\r|\\t|[}\]\\]|,\{)/i);
+    if (stopIndex >= 0) url = url.slice(0, mp4Index + 4 + stopIndex);
+  }
+
+  try {
+    return new URL(url).toString();
+  } catch {
+    return null;
+  }
+}
+
+function getAllowedHostError(url: string): string | null {
+  try {
+    const host = new URL(url).hostname.toLowerCase();
+    const allowed = ALLOWED_HOST_SUFFIXES.some((s) => host === s || host.endsWith("." + s));
+    return allowed ? null : `Resolved video host is not supported: ${host}.`;
+  } catch {
+    return "Resolved video URL is invalid.";
+  }
+}
+
 /**
  * Pulls a direct progressive MP4 URL out of a Meta AI / Facebook post HTML page.
  * Prefers progressive_recipe URLs (single-file MP4 with audio) at the highest
  * available resolution. Falls back to the first .mp4 URL found.
  */
 function extractVideoUrl(html: string): string | null {
+  const ogVideo = html.match(/<meta[^>]+(?:property|name)=["']og:video(?::secure_url)?["'][^>]+content=["']([^"']+)["'][^>]*>/i);
+  const ogCandidate = ogVideo?.[1] ? cleanExtractedVideoUrl(ogVideo[1]) : null;
+  if (ogCandidate?.includes(".mp4")) return ogCandidate;
+
   // Match raw .mp4 URLs (may contain \u0026 escapes)
   const re = /https:\\?\/\\?\/[^\s"'<>\\]+?\.mp4[^"'<>\s]*/g;
   const raw = html.match(re) ?? [];
   if (raw.length === 0) return null;
 
-  const candidates = raw.map(decodeEscapes).filter((u) => {
-    // Drop trailing garbage that ends inside an XML tag
-    return !u.includes("</BaseURL>");
-  });
+  const candidates = raw.map(cleanExtractedVideoUrl).filter((u): u is string => Boolean(u));
 
   // Prefer progressive (single-file with audio) over DASH init segments
   const progressive = candidates.filter((u) => /progressive_recipe|xpv_progressive/i.test(u));
