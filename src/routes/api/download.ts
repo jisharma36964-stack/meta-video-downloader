@@ -114,13 +114,31 @@ async function fetchWithTimeout(url: string, ms: number, init?: RequestInit) {
   }
 }
 
-async function fetchTextWithTimeout(url: string, ms: number, init?: RequestInit) {
-  const res = await fetchWithTimeout(url, ms, init);
-  const text = await Promise.race([
-    res.text(),
-    new Promise<never>((_, reject) => setTimeout(() => reject(new Error("Timed out reading response.")), ms)),
-  ]);
-  return { res, text };
+async function extractVideoUrlFromResponse(res: Response, ms: number): Promise<string | null> {
+  if (!res.body) return null;
+
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let html = "";
+  const startedAt = Date.now();
+
+  while (Date.now() - startedAt < ms && html.length < 1_500_000) {
+    const remaining = Math.max(1, ms - (Date.now() - startedAt));
+    const { done, value } = await Promise.race([
+      reader.read(),
+      new Promise<never>((_, reject) => setTimeout(() => reject(new Error("Timed out reading response.")), remaining)),
+    ]);
+    if (done) break;
+    html += decoder.decode(value, { stream: true });
+    const found = extractVideoUrl(html);
+    if (found) {
+      await reader.cancel().catch(() => {});
+      return found;
+    }
+  }
+
+  html += decoder.decode();
+  return extractVideoUrl(html);
 }
 
 async function resolveDirectVideoUrl(input: string): Promise<string> {
@@ -134,13 +152,13 @@ async function resolveDirectVideoUrl(input: string): Promise<string> {
   }
 
   // Otherwise treat as an HTML page that embeds the video URL
-  const { res, text: html } = await fetchTextWithTimeout(input, 15_000, {
+  const res = await fetchWithTimeout(input, 15_000, {
     headers: { Accept: "text/html,*/*" },
   });
   if (!res.ok) {
     throw new Error(`Could not load the post page (${res.status}).`);
   }
-  const found = extractVideoUrl(html);
+  const found = await extractVideoUrlFromResponse(res, 15_000);
   if (!found) {
     throw new Error(
       "Could not find a downloadable video on that page. The post may be private, expired, or contain no video.",
