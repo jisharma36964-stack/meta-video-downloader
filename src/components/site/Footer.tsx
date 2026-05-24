@@ -1,10 +1,12 @@
 import { Link } from "@tanstack/react-router";
+import { seoPages } from "@/lib/seo-pages";
 
 export function Footer() {
+  const popular = seoPages.slice(0, 8);
   return (
     <footer className="bg-hero text-hero-foreground">
       <div className="mx-auto max-w-6xl px-6 py-12">
-        <div className="grid gap-8 md:grid-cols-3">
+        <div className="grid gap-8 md:grid-cols-4">
           <div>
             <div className="text-lg font-semibold">MetaVideoDownloader</div>
             <p className="mt-2 max-w-xs text-sm text-hero-foreground/70">
@@ -15,8 +17,21 @@ export function Footer() {
             <div className="text-sm font-semibold">Product</div>
             <ul className="mt-3 space-y-2 text-sm text-hero-foreground/70">
               <li><Link to="/" className="hover:text-hero-foreground">Home</Link></li>
+              <li><Link to="/tools" className="hover:text-hero-foreground">All tools</Link></li>
               <li><a href="/#how" className="hover:text-hero-foreground">How it works</a></li>
               <li><a href="/#faq" className="hover:text-hero-foreground">FAQ</a></li>
+            </ul>
+          </div>
+          <div>
+            <div className="text-sm font-semibold">Popular</div>
+            <ul className="mt-3 space-y-2 text-sm text-hero-foreground/70">
+              {popular.map((p) => (
+                <li key={p.slug}>
+                  <Link to="/d/$slug" params={{ slug: p.slug }} className="hover:text-hero-foreground">
+                    {p.h1}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
           <div>
