@@ -79,7 +79,7 @@ export const Route = createFileRoute("/d/$slug")({
 });
 
 function SeoPageView() {
-  const { page } = Route.useLoaderData();
+  const { page } = Route.useLoaderData() as { page: SeoPage };
   const related = pickRelated(page.slug, 6);
 
   return (
