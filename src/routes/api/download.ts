@@ -99,6 +99,12 @@ function extractVideoUrl(html: string): string | null {
 async function fetchWithTimeout(url: string, ms: number, init?: RequestInit) {
   const ctrl = new AbortController();
   const t = setTimeout(() => ctrl.abort(), ms);
+  // Chain caller's signal so client disconnects abort the upstream too.
+  const onCallerAbort = () => ctrl.abort();
+  if (init?.signal) {
+    if (init.signal.aborted) ctrl.abort();
+    else init.signal.addEventListener("abort", onCallerAbort, { once: true });
+  }
   try {
     return await fetch(url, {
       ...init,
@@ -111,8 +117,10 @@ async function fetchWithTimeout(url: string, ms: number, init?: RequestInit) {
     });
   } finally {
     clearTimeout(t);
+    init?.signal?.removeEventListener("abort", onCallerAbort);
   }
 }
+
 
 async function extractVideoUrlFromResponse(res: Response, ms: number): Promise<string | null> {
   if (!res.body) return null;
