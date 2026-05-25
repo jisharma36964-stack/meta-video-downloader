@@ -5,6 +5,7 @@ import { HowItWorks } from "@/components/site/HowItWorks";
 import { UseCases } from "@/components/site/UseCases";
 import { Faq } from "@/components/site/Faq";
 import { Footer } from "@/components/site/Footer";
+import { AdSlot } from "@/components/site/AdSlot";
 
 export const Route = createFileRoute("/")({
   head: () => ({
