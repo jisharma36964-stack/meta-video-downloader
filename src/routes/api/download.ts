@@ -256,6 +256,7 @@ export const Route = createFileRoute("/api/download")({
         try {
           upstream = await fetchWithTimeout(directUrl, 25_000, {
             headers: { Accept: "video/*,*/*;q=0.8", Referer: "https://www.meta.ai/" },
+            signal: request.signal,
           });
         } catch (err) {
           console.error("Video fetch failed:", err);
