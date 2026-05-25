@@ -99,6 +99,12 @@ function extractVideoUrl(html: string): string | null {
 async function fetchWithTimeout(url: string, ms: number, init?: RequestInit) {
   const ctrl = new AbortController();
   const t = setTimeout(() => ctrl.abort(), ms);
+  // Chain caller's signal so client disconnects abort the upstream too.
+  const onCallerAbort = () => ctrl.abort();
+  if (init?.signal) {
+    if (init.signal.aborted) ctrl.abort();
+    else init.signal.addEventListener("abort", onCallerAbort, { once: true });
+  }
   try {
     return await fetch(url, {
       ...init,
@@ -111,8 +117,10 @@ async function fetchWithTimeout(url: string, ms: number, init?: RequestInit) {
     });
   } finally {
     clearTimeout(t);
+    init?.signal?.removeEventListener("abort", onCallerAbort);
   }
 }
+
 
 async function extractVideoUrlFromResponse(res: Response, ms: number): Promise<string | null> {
   if (!res.body) return null;
@@ -167,10 +175,62 @@ async function resolveDirectVideoUrl(input: string): Promise<string> {
   return found;
 }
 
+// Lightweight in-memory rate limiter (per-isolate). Caps abusive clients
+// before they trigger expensive scrape + proxy work.
+const RATE_LIMIT_WINDOW_MS = 60_000;
+const RATE_LIMIT_MAX = 8; // 8 downloads per IP per minute
+const rateBuckets = new Map<string, { count: number; resetAt: number }>();
+
+function takeRateToken(ip: string): { ok: boolean; retryAfter: number } {
+  const now = Date.now();
+  const b = rateBuckets.get(ip);
+  if (!b || b.resetAt <= now) {
+    rateBuckets.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return { ok: true, retryAfter: 0 };
+  }
+  if (b.count >= RATE_LIMIT_MAX) {
+    return { ok: false, retryAfter: Math.ceil((b.resetAt - now) / 1000) };
+  }
+  b.count += 1;
+  return { ok: true, retryAfter: 0 };
+}
+
+// Best-effort cleanup so the map doesn't grow unbounded.
+function sweepRateBuckets() {
+  const now = Date.now();
+  if (rateBuckets.size < 10_000) return;
+  for (const [k, v] of rateBuckets) if (v.resetAt <= now) rateBuckets.delete(k);
+}
+
+function getClientIp(request: Request): string {
+  return (
+    request.headers.get("cf-connecting-ip") ??
+    request.headers.get("x-real-ip") ??
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+    "unknown"
+  );
+}
+
 export const Route = createFileRoute("/api/download")({
   server: {
     handlers: {
       POST: async ({ request }) => {
+        sweepRateBuckets();
+        const ip = getClientIp(request);
+        const limit = takeRateToken(ip);
+        if (!limit.ok) {
+          return Response.json(
+            { error: "Too many requests. Please wait a moment and try again." },
+            {
+              status: 429,
+              headers: {
+                "Retry-After": String(limit.retryAfter),
+                "Cache-Control": "no-store",
+              },
+            },
+          );
+        }
+
         let body: unknown;
         try {
           body = await request.json();
@@ -204,6 +264,7 @@ export const Route = createFileRoute("/api/download")({
         try {
           upstream = await fetchWithTimeout(directUrl, 25_000, {
             headers: { Accept: "video/*,*/*;q=0.8", Referer: "https://www.meta.ai/" },
+            signal: request.signal,
           });
         } catch (err) {
           console.error("Video fetch failed:", err);

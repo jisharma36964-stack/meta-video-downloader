@@ -80,6 +80,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:description", content: "Save Meta AI videos as HD MP4. Free, fast, no watermark." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      // Google AdSense site verification (set VITE_ADSENSE_CLIENT to your ca-pub-XXX id)
+      ...(import.meta.env.VITE_ADSENSE_CLIENT
+        ? [{ name: "google-adsense-account", content: String(import.meta.env.VITE_ADSENSE_CLIENT) }]
+        : []),
     ],
     links: [
       {
@@ -87,6 +91,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: appCss,
       },
     ],
+    scripts: import.meta.env.VITE_ADSENSE_CLIENT
+      ? [
+          {
+            async: true,
+            src: `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${import.meta.env.VITE_ADSENSE_CLIENT}`,
+            crossOrigin: "anonymous",
+          },
+        ]
+      : [],
   }),
   shellComponent: RootShell,
   component: RootComponent,

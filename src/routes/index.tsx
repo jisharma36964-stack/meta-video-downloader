@@ -5,6 +5,7 @@ import { HowItWorks } from "@/components/site/HowItWorks";
 import { UseCases } from "@/components/site/UseCases";
 import { Faq } from "@/components/site/Faq";
 import { Footer } from "@/components/site/Footer";
+import { AdSlot } from "@/components/site/AdSlot";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -29,10 +30,19 @@ function Index() {
   return (
     <main>
       <Hero />
+      <div className="mx-auto max-w-5xl px-6">
+        <AdSlot slot="1111111111" format="auto" />
+      </div>
       <Features />
       <HowItWorks />
+      <div className="mx-auto max-w-5xl px-6">
+        <AdSlot slot="2222222222" format="auto" />
+      </div>
       <UseCases />
       <Faq />
+      <div className="mx-auto max-w-5xl px-6">
+        <AdSlot slot="3333333333" format="auto" />
+      </div>
       <Footer />
     </main>
   );
