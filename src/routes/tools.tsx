@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { seoPages } from "@/lib/seo-pages";
+import { topSeoPages } from "@/lib/seo-top-pages";
 
 export const Route = createFileRoute("/tools")({
   head: () => ({
@@ -34,11 +35,24 @@ function Tools() {
 
       <section className="bg-background py-14">
         <div className="mx-auto max-w-5xl px-6">
+          <h2 className="mb-6 text-2xl font-semibold text-foreground">Featured tools</h2>
+          <ul className="mb-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {topSeoPages.map((p) => (
+              <li key={p.slug} className="rounded-xl border border-brand/40 bg-card p-4 transition hover:border-brand">
+                <a href={`/${p.slug}`} className="block">
+                  <h3 className="text-base font-semibold text-foreground">{p.h1}</h3>
+                  <p className="mt-2 text-sm text-muted-foreground line-clamp-2">{p.description}</p>
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          <h2 className="mb-6 text-2xl font-semibold text-foreground">All tools</h2>
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {seoPages.map((p) => (
               <li key={p.slug} className="rounded-xl border border-border bg-card p-4 transition hover:border-brand">
                 <Link to="/d/$slug" params={{ slug: p.slug }} className="block">
-                  <h2 className="text-base font-semibold text-foreground">{p.h1}</h2>
+                  <h3 className="text-base font-semibold text-foreground">{p.h1}</h3>
                   <p className="mt-2 text-sm text-muted-foreground line-clamp-2">{p.description}</p>
                 </Link>
               </li>
