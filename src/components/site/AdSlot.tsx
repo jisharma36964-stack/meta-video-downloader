@@ -5,12 +5,8 @@ import { useEffect, useRef } from "react";
  *
  * Usage:
  *   <AdSlot slot="1234567890" format="auto" />
- *
- * Set your AdSense client ID once via VITE_ADSENSE_CLIENT (e.g. "ca-pub-XXXXXXXX")
- * in your environment, or hardcode below.
  */
-const ADSENSE_CLIENT =
-  (import.meta.env.VITE_ADSENSE_CLIENT as string | undefined) ?? "";
+const ADSENSE_CLIENT = "ca-pub-8032318964552823";
 
 type AdSlotProps = {
   slot: string;
