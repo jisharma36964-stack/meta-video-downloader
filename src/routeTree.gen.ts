@@ -13,6 +13,16 @@ import { Route as ToolsRouteImport } from './routes/tools'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as MetaAiVideoSaverWithoutWatermarkRouteImport } from './routes/meta-ai-video-saver-without-watermark'
+import { Route as MetaAiVideoExportDownloaderRouteImport } from './routes/meta-ai-video-export-downloader'
+import { Route as MetaAiVideoDownloaderOnlineFreeRouteImport } from './routes/meta-ai-video-downloader-online-free'
+import { Route as MetaAiVideoDownloadTool2026RouteImport } from './routes/meta-ai-video-download-tool-2026'
+import { Route as MetaAiStoryVideoDownloaderRouteImport } from './routes/meta-ai-story-video-downloader'
+import { Route as MetaAiShortsDownloaderFreeRouteImport } from './routes/meta-ai-shorts-downloader-free'
+import { Route as MetaAiReelDownloaderHdRouteImport } from './routes/meta-ai-reel-downloader-hd'
+import { Route as MetaAiHdVideoDownloaderToolRouteImport } from './routes/meta-ai-hd-video-downloader-tool'
+import { Route as MetaAiGeneratedVideoDownloaderRouteImport } from './routes/meta-ai-generated-video-downloader'
+import { Route as MetaAiClipDownloaderOnlineRouteImport } from './routes/meta-ai-clip-downloader-online'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
@@ -39,6 +49,65 @@ const PrivacyRoute = PrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MetaAiVideoSaverWithoutWatermarkRoute =
+  MetaAiVideoSaverWithoutWatermarkRouteImport.update({
+    id: '/meta-ai-video-saver-without-watermark',
+    path: '/meta-ai-video-saver-without-watermark',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const MetaAiVideoExportDownloaderRoute =
+  MetaAiVideoExportDownloaderRouteImport.update({
+    id: '/meta-ai-video-export-downloader',
+    path: '/meta-ai-video-export-downloader',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const MetaAiVideoDownloaderOnlineFreeRoute =
+  MetaAiVideoDownloaderOnlineFreeRouteImport.update({
+    id: '/meta-ai-video-downloader-online-free',
+    path: '/meta-ai-video-downloader-online-free',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const MetaAiVideoDownloadTool2026Route =
+  MetaAiVideoDownloadTool2026RouteImport.update({
+    id: '/meta-ai-video-download-tool-2026',
+    path: '/meta-ai-video-download-tool-2026',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const MetaAiStoryVideoDownloaderRoute =
+  MetaAiStoryVideoDownloaderRouteImport.update({
+    id: '/meta-ai-story-video-downloader',
+    path: '/meta-ai-story-video-downloader',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const MetaAiShortsDownloaderFreeRoute =
+  MetaAiShortsDownloaderFreeRouteImport.update({
+    id: '/meta-ai-shorts-downloader-free',
+    path: '/meta-ai-shorts-downloader-free',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const MetaAiReelDownloaderHdRoute = MetaAiReelDownloaderHdRouteImport.update({
+  id: '/meta-ai-reel-downloader-hd',
+  path: '/meta-ai-reel-downloader-hd',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MetaAiHdVideoDownloaderToolRoute =
+  MetaAiHdVideoDownloaderToolRouteImport.update({
+    id: '/meta-ai-hd-video-downloader-tool',
+    path: '/meta-ai-hd-video-downloader-tool',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const MetaAiGeneratedVideoDownloaderRoute =
+  MetaAiGeneratedVideoDownloaderRouteImport.update({
+    id: '/meta-ai-generated-video-downloader',
+    path: '/meta-ai-generated-video-downloader',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const MetaAiClipDownloaderOnlineRoute =
+  MetaAiClipDownloaderOnlineRouteImport.update({
+    id: '/meta-ai-clip-downloader-online',
+    path: '/meta-ai-clip-downloader-online',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
@@ -69,6 +138,16 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/meta-ai-clip-downloader-online': typeof MetaAiClipDownloaderOnlineRoute
+  '/meta-ai-generated-video-downloader': typeof MetaAiGeneratedVideoDownloaderRoute
+  '/meta-ai-hd-video-downloader-tool': typeof MetaAiHdVideoDownloaderToolRoute
+  '/meta-ai-reel-downloader-hd': typeof MetaAiReelDownloaderHdRoute
+  '/meta-ai-shorts-downloader-free': typeof MetaAiShortsDownloaderFreeRoute
+  '/meta-ai-story-video-downloader': typeof MetaAiStoryVideoDownloaderRoute
+  '/meta-ai-video-download-tool-2026': typeof MetaAiVideoDownloadTool2026Route
+  '/meta-ai-video-downloader-online-free': typeof MetaAiVideoDownloaderOnlineFreeRoute
+  '/meta-ai-video-export-downloader': typeof MetaAiVideoExportDownloaderRoute
+  '/meta-ai-video-saver-without-watermark': typeof MetaAiVideoSaverWithoutWatermarkRoute
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
@@ -80,6 +159,16 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/meta-ai-clip-downloader-online': typeof MetaAiClipDownloaderOnlineRoute
+  '/meta-ai-generated-video-downloader': typeof MetaAiGeneratedVideoDownloaderRoute
+  '/meta-ai-hd-video-downloader-tool': typeof MetaAiHdVideoDownloaderToolRoute
+  '/meta-ai-reel-downloader-hd': typeof MetaAiReelDownloaderHdRoute
+  '/meta-ai-shorts-downloader-free': typeof MetaAiShortsDownloaderFreeRoute
+  '/meta-ai-story-video-downloader': typeof MetaAiStoryVideoDownloaderRoute
+  '/meta-ai-video-download-tool-2026': typeof MetaAiVideoDownloadTool2026Route
+  '/meta-ai-video-downloader-online-free': typeof MetaAiVideoDownloaderOnlineFreeRoute
+  '/meta-ai-video-export-downloader': typeof MetaAiVideoExportDownloaderRoute
+  '/meta-ai-video-saver-without-watermark': typeof MetaAiVideoSaverWithoutWatermarkRoute
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
@@ -92,6 +181,16 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/meta-ai-clip-downloader-online': typeof MetaAiClipDownloaderOnlineRoute
+  '/meta-ai-generated-video-downloader': typeof MetaAiGeneratedVideoDownloaderRoute
+  '/meta-ai-hd-video-downloader-tool': typeof MetaAiHdVideoDownloaderToolRoute
+  '/meta-ai-reel-downloader-hd': typeof MetaAiReelDownloaderHdRoute
+  '/meta-ai-shorts-downloader-free': typeof MetaAiShortsDownloaderFreeRoute
+  '/meta-ai-story-video-downloader': typeof MetaAiStoryVideoDownloaderRoute
+  '/meta-ai-video-download-tool-2026': typeof MetaAiVideoDownloadTool2026Route
+  '/meta-ai-video-downloader-online-free': typeof MetaAiVideoDownloaderOnlineFreeRoute
+  '/meta-ai-video-export-downloader': typeof MetaAiVideoExportDownloaderRoute
+  '/meta-ai-video-saver-without-watermark': typeof MetaAiVideoSaverWithoutWatermarkRoute
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
@@ -105,6 +204,16 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/contact'
+    | '/meta-ai-clip-downloader-online'
+    | '/meta-ai-generated-video-downloader'
+    | '/meta-ai-hd-video-downloader-tool'
+    | '/meta-ai-reel-downloader-hd'
+    | '/meta-ai-shorts-downloader-free'
+    | '/meta-ai-story-video-downloader'
+    | '/meta-ai-video-download-tool-2026'
+    | '/meta-ai-video-downloader-online-free'
+    | '/meta-ai-video-export-downloader'
+    | '/meta-ai-video-saver-without-watermark'
     | '/privacy'
     | '/sitemap.xml'
     | '/terms'
@@ -116,6 +225,16 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/contact'
+    | '/meta-ai-clip-downloader-online'
+    | '/meta-ai-generated-video-downloader'
+    | '/meta-ai-hd-video-downloader-tool'
+    | '/meta-ai-reel-downloader-hd'
+    | '/meta-ai-shorts-downloader-free'
+    | '/meta-ai-story-video-downloader'
+    | '/meta-ai-video-download-tool-2026'
+    | '/meta-ai-video-downloader-online-free'
+    | '/meta-ai-video-export-downloader'
+    | '/meta-ai-video-saver-without-watermark'
     | '/privacy'
     | '/sitemap.xml'
     | '/terms'
@@ -127,6 +246,16 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/contact'
+    | '/meta-ai-clip-downloader-online'
+    | '/meta-ai-generated-video-downloader'
+    | '/meta-ai-hd-video-downloader-tool'
+    | '/meta-ai-reel-downloader-hd'
+    | '/meta-ai-shorts-downloader-free'
+    | '/meta-ai-story-video-downloader'
+    | '/meta-ai-video-download-tool-2026'
+    | '/meta-ai-video-downloader-online-free'
+    | '/meta-ai-video-export-downloader'
+    | '/meta-ai-video-saver-without-watermark'
     | '/privacy'
     | '/sitemap.xml'
     | '/terms'
@@ -139,6 +268,16 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
+  MetaAiClipDownloaderOnlineRoute: typeof MetaAiClipDownloaderOnlineRoute
+  MetaAiGeneratedVideoDownloaderRoute: typeof MetaAiGeneratedVideoDownloaderRoute
+  MetaAiHdVideoDownloaderToolRoute: typeof MetaAiHdVideoDownloaderToolRoute
+  MetaAiReelDownloaderHdRoute: typeof MetaAiReelDownloaderHdRoute
+  MetaAiShortsDownloaderFreeRoute: typeof MetaAiShortsDownloaderFreeRoute
+  MetaAiStoryVideoDownloaderRoute: typeof MetaAiStoryVideoDownloaderRoute
+  MetaAiVideoDownloadTool2026Route: typeof MetaAiVideoDownloadTool2026Route
+  MetaAiVideoDownloaderOnlineFreeRoute: typeof MetaAiVideoDownloaderOnlineFreeRoute
+  MetaAiVideoExportDownloaderRoute: typeof MetaAiVideoExportDownloaderRoute
+  MetaAiVideoSaverWithoutWatermarkRoute: typeof MetaAiVideoSaverWithoutWatermarkRoute
   PrivacyRoute: typeof PrivacyRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
@@ -175,6 +314,76 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/meta-ai-video-saver-without-watermark': {
+      id: '/meta-ai-video-saver-without-watermark'
+      path: '/meta-ai-video-saver-without-watermark'
+      fullPath: '/meta-ai-video-saver-without-watermark'
+      preLoaderRoute: typeof MetaAiVideoSaverWithoutWatermarkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/meta-ai-video-export-downloader': {
+      id: '/meta-ai-video-export-downloader'
+      path: '/meta-ai-video-export-downloader'
+      fullPath: '/meta-ai-video-export-downloader'
+      preLoaderRoute: typeof MetaAiVideoExportDownloaderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/meta-ai-video-downloader-online-free': {
+      id: '/meta-ai-video-downloader-online-free'
+      path: '/meta-ai-video-downloader-online-free'
+      fullPath: '/meta-ai-video-downloader-online-free'
+      preLoaderRoute: typeof MetaAiVideoDownloaderOnlineFreeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/meta-ai-video-download-tool-2026': {
+      id: '/meta-ai-video-download-tool-2026'
+      path: '/meta-ai-video-download-tool-2026'
+      fullPath: '/meta-ai-video-download-tool-2026'
+      preLoaderRoute: typeof MetaAiVideoDownloadTool2026RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/meta-ai-story-video-downloader': {
+      id: '/meta-ai-story-video-downloader'
+      path: '/meta-ai-story-video-downloader'
+      fullPath: '/meta-ai-story-video-downloader'
+      preLoaderRoute: typeof MetaAiStoryVideoDownloaderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/meta-ai-shorts-downloader-free': {
+      id: '/meta-ai-shorts-downloader-free'
+      path: '/meta-ai-shorts-downloader-free'
+      fullPath: '/meta-ai-shorts-downloader-free'
+      preLoaderRoute: typeof MetaAiShortsDownloaderFreeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/meta-ai-reel-downloader-hd': {
+      id: '/meta-ai-reel-downloader-hd'
+      path: '/meta-ai-reel-downloader-hd'
+      fullPath: '/meta-ai-reel-downloader-hd'
+      preLoaderRoute: typeof MetaAiReelDownloaderHdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/meta-ai-hd-video-downloader-tool': {
+      id: '/meta-ai-hd-video-downloader-tool'
+      path: '/meta-ai-hd-video-downloader-tool'
+      fullPath: '/meta-ai-hd-video-downloader-tool'
+      preLoaderRoute: typeof MetaAiHdVideoDownloaderToolRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/meta-ai-generated-video-downloader': {
+      id: '/meta-ai-generated-video-downloader'
+      path: '/meta-ai-generated-video-downloader'
+      fullPath: '/meta-ai-generated-video-downloader'
+      preLoaderRoute: typeof MetaAiGeneratedVideoDownloaderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/meta-ai-clip-downloader-online': {
+      id: '/meta-ai-clip-downloader-online'
+      path: '/meta-ai-clip-downloader-online'
+      fullPath: '/meta-ai-clip-downloader-online'
+      preLoaderRoute: typeof MetaAiClipDownloaderOnlineRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -219,6 +428,16 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
+  MetaAiClipDownloaderOnlineRoute: MetaAiClipDownloaderOnlineRoute,
+  MetaAiGeneratedVideoDownloaderRoute: MetaAiGeneratedVideoDownloaderRoute,
+  MetaAiHdVideoDownloaderToolRoute: MetaAiHdVideoDownloaderToolRoute,
+  MetaAiReelDownloaderHdRoute: MetaAiReelDownloaderHdRoute,
+  MetaAiShortsDownloaderFreeRoute: MetaAiShortsDownloaderFreeRoute,
+  MetaAiStoryVideoDownloaderRoute: MetaAiStoryVideoDownloaderRoute,
+  MetaAiVideoDownloadTool2026Route: MetaAiVideoDownloadTool2026Route,
+  MetaAiVideoDownloaderOnlineFreeRoute: MetaAiVideoDownloaderOnlineFreeRoute,
+  MetaAiVideoExportDownloaderRoute: MetaAiVideoExportDownloaderRoute,
+  MetaAiVideoSaverWithoutWatermarkRoute: MetaAiVideoSaverWithoutWatermarkRoute,
   PrivacyRoute: PrivacyRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
