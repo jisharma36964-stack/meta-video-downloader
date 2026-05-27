@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { seoPages } from "@/lib/seo-pages";
+import { topSeoPages } from "@/lib/seo-top-pages";
 
 // TODO: replace with your project URL once a project name or custom domain is set.
 const BASE_URL = "";
@@ -10,8 +11,9 @@ export const Route = createFileRoute("/sitemap.xml")({
     handlers: {
       GET: async () => {
         const staticPaths = ["/", "/tools", "/about", "/contact", "/privacy", "/terms"];
+        const topPaths = topSeoPages.map((p) => `/${p.slug}`);
         const dynamicPaths = seoPages.map((p) => `/d/${p.slug}`);
-        const all = [...staticPaths, ...dynamicPaths];
+        const all = [...staticPaths, ...topPaths, ...dynamicPaths];
 
         const urls = all
           .map((path) => {
