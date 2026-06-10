@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { topSeoPages } from "@/lib/seo-top-pages";
 
 export function Footer() {
-  const popular = topSeoPages.slice(0, 8);
+  const popular = topSeoPages;
   return (
     <footer className="bg-hero text-hero-foreground">
       <div className="mx-auto max-w-6xl px-6 py-12">
@@ -18,8 +18,9 @@ export function Footer() {
             <ul className="mt-3 space-y-2 text-sm text-hero-foreground/70">
               <li><Link to="/" className="hover:text-hero-foreground">Home</Link></li>
               <li><Link to="/tools" className="hover:text-hero-foreground">All tools</Link></li>
+              <li><Link to="/blog" className="hover:text-hero-foreground">Blog</Link></li>
+              <li><Link to="/faq" className="hover:text-hero-foreground">FAQ</Link></li>
               <li><a href="/#how" className="hover:text-hero-foreground">How it works</a></li>
-              <li><a href="/#faq" className="hover:text-hero-foreground">FAQ</a></li>
             </ul>
           </div>
           <div>
