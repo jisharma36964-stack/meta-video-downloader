@@ -11,7 +11,7 @@ export const topSeoPages: SeoPage[] = [
     description:
       "Free online Meta AI video downloader — paste a share link and save HD MP4 instantly. No signup, no app, no watermark. Works on mobile and desktop.",
     keyword: "meta ai video downloader",
-    related: ["online meta ai downloader", "free meta ai video", "meta ai mp4 download"],
+    related: ["download meta ai videos", "free meta ai downloader", "meta ai download tool"],
     audience: "anyone who wants a fast, fully online way to save Meta AI videos",
     angle: "a free, browser-only Meta AI video downloader that runs anywhere with zero install",
     intro:
@@ -36,7 +36,7 @@ export const topSeoPages: SeoPage[] = [
     description:
       "Download Meta AI reels in HD with one paste. Free Meta AI reel downloader — full quality MP4, no watermark, no signup. Built for creators.",
     keyword: "meta ai reel downloader",
-    related: ["hd meta ai reel", "meta ai reel saver", "meta ai reel mp4"],
+    related: ["download meta ai reels", "hd reel downloader", "save meta ai reels"],
     audience: "short-form creators who want HD copies of Meta AI reels",
     angle: "an HD-first Meta AI reel downloader tuned for vertical 9:16 content",
     intro:
@@ -61,7 +61,7 @@ export const topSeoPages: SeoPage[] = [
     description:
       "Save Meta AI videos without a watermark. Free Meta AI video saver that returns a clean HD MP4 from any share link in seconds.",
     keyword: "meta ai video saver",
-    related: ["meta ai video without watermark", "clean meta ai download", "no watermark meta ai"],
+    related: ["save meta ai videos", "video saver without watermark", "meta ai save tool"],
     audience: "creators who need clean, brand-safe Meta AI videos for re-use",
     angle: "a Meta AI video saver that returns the raw MP4 untouched — no overlays, no branding",
     intro:
@@ -86,7 +86,7 @@ export const topSeoPages: SeoPage[] = [
     description:
       "The Meta AI video download tool built for 2026 — fast, free, HD, no watermark. Updated regularly to match every Meta AI share page change.",
     keyword: "meta ai video download tool",
-    related: ["2026 meta ai downloader", "updated meta ai tool", "latest meta ai download"],
+    related: ["best meta ai downloader", "meta ai tool", "video download platform"],
     audience: "users who want the most current, actively maintained Meta AI download tool",
     angle: "an actively maintained Meta AI download tool that keeps up with every share page change",
     intro:
@@ -111,7 +111,7 @@ export const topSeoPages: SeoPage[] = [
     description:
       "Download short Meta AI clips online in seconds. Free Meta AI clip downloader — paste, click, save. HD MP4, no watermark, mobile-friendly.",
     keyword: "meta ai clip downloader",
-    related: ["online meta ai clip", "meta ai short clip download", "meta ai clip mp4"],
+    related: ["download meta ai clips", "ai clip downloader", "clip saver tool"],
     audience: "people who need a quick way to grab short Meta AI clips",
     angle: "an instant online Meta AI clip downloader tuned for short-form snippets",
     intro:
@@ -135,8 +135,8 @@ export const topSeoPages: SeoPage[] = [
     h1: "Meta AI Video Export Downloader for Editors",
     description:
       "Export and download Meta AI videos as editor-ready HD MP4. Compatible with CapCut, Premiere, DaVinci. Free, no watermark, no signup.",
-    keyword: "meta ai video export",
-    related: ["meta ai video editor export", "meta ai mp4 export", "meta ai for capcut"],
+    keyword: "meta ai video export downloader",
+    related: ["export meta ai videos", "video export tool", "ai export downloader"],
     audience: "video editors who need Meta AI clips inside a desktop NLE",
     angle: "a Meta AI export downloader that produces files ready to drop straight into a timeline",
     intro:
@@ -161,7 +161,7 @@ export const topSeoPages: SeoPage[] = [
     description:
       "Free Meta AI shorts downloader — save vertical AI shorts as HD MP4 in seconds. No watermark, no signup, perfect for cross-posting to Shorts and TikTok.",
     keyword: "meta ai shorts downloader",
-    related: ["free meta ai shorts", "meta ai vertical video", "meta ai shorts mp4"],
+    related: ["download meta ai shorts", "short video downloader", "save ai shorts"],
     audience: "creators who post AI-generated shorts on YouTube, TikTok, and Instagram",
     angle: "a free Meta AI shorts downloader optimized for vertical cross-posting workflows",
     intro:
@@ -186,7 +186,7 @@ export const topSeoPages: SeoPage[] = [
     description:
       "Download any Meta AI generated video as HD MP4. Free, fast, no watermark. Built specifically for Meta AI's share page format.",
     keyword: "meta ai generated video downloader",
-    related: ["ai generated video meta", "meta ai output download", "meta ai generation saver"],
+    related: ["download ai generated videos", "ai video downloads", "generated video saver"],
     audience: "users archiving their own Meta AI generations before chat history rolls over",
     angle: "a downloader built specifically for the Meta AI generation share page format",
     intro:
@@ -210,8 +210,8 @@ export const topSeoPages: SeoPage[] = [
     h1: "Meta AI Story Video Downloader",
     description:
       "Download Meta AI story videos as clean HD MP4. Free Meta AI story downloader — save short vertical stories with no watermark and no signup.",
-    keyword: "meta ai story downloader",
-    related: ["meta ai story video", "meta ai story mp4", "save meta ai story"],
+    keyword: "meta ai story video downloader",
+    related: ["download meta ai stories", "story saver", "ai story downloader"],
     audience: "users saving short Meta AI stories before they expire or roll off",
     angle: "a Meta AI story downloader tuned for short, time-sensitive vertical content",
     intro:
@@ -236,7 +236,7 @@ export const topSeoPages: SeoPage[] = [
     description:
       "Meta AI HD video downloader — save Meta AI clips in full HD MP4. Free tool, no watermark, no signup, no quality loss. Works on any device.",
     keyword: "meta ai hd video downloader",
-    related: ["meta ai full hd download", "meta ai 1080p download", "meta ai high quality mp4"],
+    related: ["download hd ai videos", "hd video saver", "high quality ai downloads"],
     audience: "users who specifically need full HD versions of their Meta AI videos",
     angle: "an HD-first Meta AI downloader that never downgrades quality to save bandwidth",
     intro:
