@@ -24,8 +24,10 @@ import { Route as MetaAiHdVideoDownloaderToolRouteImport } from './routes/meta-a
 import { Route as MetaAiGeneratedVideoDownloaderRouteImport } from './routes/meta-ai-generated-video-downloader'
 import { Route as MetaAiClipDownloaderOnlineRouteImport } from './routes/meta-ai-clip-downloader-online'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as DSlugRouteImport } from './routes/d.$slug'
 import { Route as ApiDownloadRouteImport } from './routes/api/download'
 
@@ -113,6 +115,11 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -122,6 +129,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => BlogRoute,
 } as any)
 const DSlugRoute = DSlugRouteImport.update({
   id: '/d/$slug',
@@ -137,6 +149,7 @@ const ApiDownloadRoute = ApiDownloadRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/blog': typeof BlogRouteWithChildren
   '/contact': typeof ContactRoute
   '/meta-ai-clip-downloader-online': typeof MetaAiClipDownloaderOnlineRoute
   '/meta-ai-generated-video-downloader': typeof MetaAiGeneratedVideoDownloaderRoute
@@ -154,6 +167,7 @@ export interface FileRoutesByFullPath {
   '/tools': typeof ToolsRoute
   '/api/download': typeof ApiDownloadRoute
   '/d/$slug': typeof DSlugRoute
+  '/blog/': typeof BlogIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -175,11 +189,13 @@ export interface FileRoutesByTo {
   '/tools': typeof ToolsRoute
   '/api/download': typeof ApiDownloadRoute
   '/d/$slug': typeof DSlugRoute
+  '/blog': typeof BlogIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/blog': typeof BlogRouteWithChildren
   '/contact': typeof ContactRoute
   '/meta-ai-clip-downloader-online': typeof MetaAiClipDownloaderOnlineRoute
   '/meta-ai-generated-video-downloader': typeof MetaAiGeneratedVideoDownloaderRoute
@@ -197,12 +213,14 @@ export interface FileRoutesById {
   '/tools': typeof ToolsRoute
   '/api/download': typeof ApiDownloadRoute
   '/d/$slug': typeof DSlugRoute
+  '/blog/': typeof BlogIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/about'
+    | '/blog'
     | '/contact'
     | '/meta-ai-clip-downloader-online'
     | '/meta-ai-generated-video-downloader'
@@ -220,6 +238,7 @@ export interface FileRouteTypes {
     | '/tools'
     | '/api/download'
     | '/d/$slug'
+    | '/blog/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -241,10 +260,12 @@ export interface FileRouteTypes {
     | '/tools'
     | '/api/download'
     | '/d/$slug'
+    | '/blog'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/blog'
     | '/contact'
     | '/meta-ai-clip-downloader-online'
     | '/meta-ai-generated-video-downloader'
@@ -262,11 +283,13 @@ export interface FileRouteTypes {
     | '/tools'
     | '/api/download'
     | '/d/$slug'
+    | '/blog/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  BlogRoute: typeof BlogRouteWithChildren
   ContactRoute: typeof ContactRoute
   MetaAiClipDownloaderOnlineRoute: typeof MetaAiClipDownloaderOnlineRoute
   MetaAiGeneratedVideoDownloaderRoute: typeof MetaAiGeneratedVideoDownloaderRoute
@@ -393,6 +416,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -406,6 +436,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/blog/': {
+      id: '/blog/'
+      path: '/'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof BlogRoute
     }
     '/d/$slug': {
       id: '/d/$slug'
@@ -424,9 +461,20 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface BlogRouteChildren {
+  BlogIndexRoute: typeof BlogIndexRoute
+}
+
+const BlogRouteChildren: BlogRouteChildren = {
+  BlogIndexRoute: BlogIndexRoute,
+}
+
+const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  BlogRoute: BlogRouteWithChildren,
   ContactRoute: ContactRoute,
   MetaAiClipDownloaderOnlineRoute: MetaAiClipDownloaderOnlineRoute,
   MetaAiGeneratedVideoDownloaderRoute: MetaAiGeneratedVideoDownloaderRoute,
