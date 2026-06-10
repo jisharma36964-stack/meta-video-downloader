@@ -14,8 +14,8 @@ export function Header() {
         <nav className="hidden items-center gap-7 text-sm text-hero-foreground/80 md:flex">
           <Link to="/" className="hover:text-hero-foreground">Home</Link>
           <Link to="/tools" className="hover:text-hero-foreground">Tools</Link>
-          <a href="/#how" className="hover:text-hero-foreground">How it works</a>
-          <a href="/#faq" className="hover:text-hero-foreground">FAQ</a>
+          <Link to="/blog" className="hover:text-hero-foreground">Blog</Link>
+          <Link to="/faq" className="hover:text-hero-foreground">FAQ</Link>
           <Link to="/about" className="hover:text-hero-foreground">About</Link>
         </nav>
       </div>
