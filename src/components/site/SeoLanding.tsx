@@ -141,7 +141,7 @@ export function SeoLanding({ page, url }: SeoLandingProps) {
           {/* Sidebar */}
           <aside className="space-y-6">
             <div className="rounded-2xl border border-border bg-card p-5">
-              <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Related Tools</h3>
+              <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Related Pages</h3>
               <ul className="mt-3 space-y-2 text-sm">
                 {related.map((r) => (
                   <li key={r.slug}>
@@ -159,7 +159,15 @@ export function SeoLanding({ page, url }: SeoLandingProps) {
               </Link>
             </div>
             <div className="rounded-2xl border border-border bg-card p-5">
-              <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Keywords</h3>
+              <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Explore</h3>
+              <ul className="mt-3 space-y-2 text-sm">
+                <li><Link to="/" className="text-foreground hover:text-brand">Home — main downloader</Link></li>
+                <li><Link to="/faq" className="text-foreground hover:text-brand">FAQ — common questions</Link></li>
+                <li><Link to="/blog" className="text-foreground hover:text-brand">Blog — guides &amp; tips</Link></li>
+              </ul>
+            </div>
+            <div className="rounded-2xl border border-border bg-card p-5">
+              <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Target Keywords</h3>
               <div className="mt-3 flex flex-wrap gap-2">
                 {[page.keyword, ...page.related].map((k) => (
                   <span key={k} className="rounded-full bg-muted px-2.5 py-1 text-xs text-foreground">
@@ -171,6 +179,28 @@ export function SeoLanding({ page, url }: SeoLandingProps) {
           </aside>
         </div>
       </section>
+
+      {/* Popular Downloads */}
+      <section className="border-t border-border bg-muted/30 py-14">
+        <div className="mx-auto max-w-5xl px-6">
+          <h2 className="text-2xl font-semibold text-foreground">Popular Downloads</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Explore the full Meta AI downloader suite — each tool is tuned for a specific format.
+          </p>
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {popular.map((p) => (
+              <a
+                key={p.slug}
+                href={`/${p.slug}`}
+                className="rounded-xl border border-border bg-card p-4 text-sm font-medium text-foreground transition-colors hover:border-brand hover:text-brand"
+              >
+                {p.title}
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
 
       {/* CTA */}
       <section className="bg-hero py-16 text-hero-foreground">
