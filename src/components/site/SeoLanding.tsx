@@ -12,7 +12,14 @@ interface SeoLandingProps {
 }
 
 export function SeoLanding({ page, url }: SeoLandingProps) {
-  const related = topSeoPages.filter((p) => p.slug !== page.slug).slice(0, 6);
+  const others = topSeoPages.filter((p) => p.slug !== page.slug);
+  const idx = topSeoPages.findIndex((p) => p.slug === page.slug);
+  // 3 curated related downloader pages (rotating so each page links to a
+  // distinct trio — supports topical authority without cannibalization).
+  const related = Array.from({ length: 3 }, (_, i) => topSeoPages[(idx + i + 1) % topSeoPages.length]).filter(
+    (p) => p.slug !== page.slug,
+  );
+  const popular = others.slice(0, 6);
 
   return (
     <main>
