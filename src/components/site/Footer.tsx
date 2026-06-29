@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { topSeoPages } from "@/lib/seo-top-pages";
+import { DISCLAIMER_TEXT } from "@/components/site/Disclaimer";
 
 export function Footer() {
   const popular = topSeoPages;
