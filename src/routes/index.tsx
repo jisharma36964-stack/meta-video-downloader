@@ -32,11 +32,14 @@ function Index() {
   return (
     <main>
       <Hero />
+      <Disclaimer />
       <div className="mx-auto max-w-5xl px-6">
         <AdSlot slot="1111111111" format="auto" />
       </div>
+      <Overview />
       <Features />
       <HowItWorks />
+
       <div className="mx-auto max-w-5xl px-6">
         <AdSlot slot="2222222222" format="auto" />
       </div>
