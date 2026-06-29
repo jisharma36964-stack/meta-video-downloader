@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Hero } from "@/components/site/Hero";
+import { Disclaimer } from "@/components/site/Disclaimer";
+import { Overview } from "@/components/site/Overview";
 import { Features } from "@/components/site/Features";
 import { HowItWorks } from "@/components/site/HowItWorks";
 import { UseCases } from "@/components/site/UseCases";
@@ -30,11 +32,14 @@ function Index() {
   return (
     <main>
       <Hero />
+      <Disclaimer />
       <div className="mx-auto max-w-5xl px-6">
         <AdSlot slot="1111111111" format="auto" />
       </div>
+      <Overview />
       <Features />
       <HowItWorks />
+
       <div className="mx-auto max-w-5xl px-6">
         <AdSlot slot="2222222222" format="auto" />
       </div>
