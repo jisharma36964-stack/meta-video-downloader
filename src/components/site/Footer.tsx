@@ -46,9 +46,13 @@ export function Footer() {
             </ul>
           </div>
         </div>
-        <div className="mt-10 border-t border-hero-foreground/10 pt-6 text-xs text-hero-foreground/60">
+        <div className="mt-10 rounded-xl border border-hero-foreground/10 bg-hero-foreground/5 p-4 text-xs leading-relaxed text-hero-foreground/60">
+          {DISCLAIMER_TEXT}
+        </div>
+        <div className="mt-6 border-t border-hero-foreground/10 pt-6 text-xs text-hero-foreground/60">
           © {new Date().getFullYear()} MetaVideoDownloader. Not affiliated with Meta Platforms, Inc.
         </div>
+
       </div>
     </footer>
   );
